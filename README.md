@@ -41,38 +41,39 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 
 3. - One RHEL8 NFS server
 
-4. - One **Nginx LB** server(based on Ubuntu Server 20.04 LTS)
+4. - One **Nginx LB** server(based on Ubuntu 20.04 LTS)
 
 - Your target architecture will look like this:
 
 ![10_1](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/39dc9bc2-c2e2-4939-acde-4b4890f099db)   
 
-
-![10_2](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/e58525a7-9170-4abf-a364-16fb8e9057c9)
-   
-
+ 
 ## ***CONFIGURE NGINX AS A LOAD BALANCER***
 
-- You can either uninstall Apache from the existing Load Balancer server, or create a fresh installation of Linux for Nginx.
+1. - I created an EC2 VM based on Ubuntu Server 20.04 LTS and name it **Nginx LB** (do not forget to open TCP port 80 for HTTP connections, also open TCP port 443 – this port is used for secured HTTPS connections).
+  
+![10_2](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/e58525a7-9170-4abf-a364-16fb8e9057c9)   
 
-1. - Create an EC2 VM based on Ubuntu Server 20.04 LTS and name it **Nginx LB** (do not forget to open TCP port 80 for HTTP connections, also open TCP port 443 – this port is used for secured HTTPS connections).
-
-2. - Update **/etc/hosts** file for local DNS with Web Servers’ names (e.g. **Web1 and Web2**) and their local IP addresses
+2. - I had to update **/etc/hosts** file for local DNS with Web Servers’ names (e.g. **Web1 and Web2**) and their local IP addresses, just as it was done on Project 8.
+  
+# PICTURE  - CHECK Tony 
 
 3. - Install and configure Nginx as a load balancer to point traffic to the resolvable DNS names of the webservers
 
-- Update the instance and Install Nginx
+- I had to update the instance and Install Nginx
 
 ```
 sudo apt update
 sudo apt install nginx
 ```
 
-- Configure Nginx LB using Web Servers’ names defined in **/etc/hosts**
+# PICTURE  - CHECK Tony 
 
-- Hint: Read this [blog](https://linuxize.com/post/how-to-edit-your-hosts-file/) to read about **/etc/host**
+- Configure Nginx LB using Web Servers’ names defined in /etc/hosts
 
-- Open the default nginx configuration file `sudo vi /etc/nginx/nginx.conf`
+- Open the default nginx configuration file
+
+`sudo vi /etc/nginx/nginx.conf`
 
 ```
 #insert following configuration into http section
@@ -94,11 +95,12 @@ server {
 #include /etc/nginx/sites-enabled/*;
 ```
 
-<img width="634" alt="nginx conf file" src="https://user-images.githubusercontent.com/115954100/230280379-9e8ba97e-3a4e-4289-9396-184e70e22632.png">
+# PICTURE  - CHECK Tony 
 
 - Restart Nginx and make sure the service is up and running
 
 ```
+sudo systemctl enable nginx
 sudo systemctl restart nginx
 sudo systemctl status nginx
 ```
