@@ -1,14 +1,25 @@
 # PROJECT-10
 LOAD BALANCER SOLUTION WITH NGINX AND SSL/TLS
 
+## PROJECT TASK
 
-- By now you have learned what Load Balancing is used for and have configured an LB solution using Apache, but a DevOps engineer must be a versatile professional and know different alternative solutions for the same problem. That is why, in this project we will configure an [Nginx](https://www.nginx.com) Load Balancer solution.
+Implement Nginx Load Balancing Web Solution with secured HTTPS connection with periodically updated SSL/TLS certificates.
+
+- This project consists of two parts:
+
+1. - Configure an Nginx [Nginx](https://www.nginx.com) Load Balancer solution
+
+2. - Register a new domain name and configure secured connection using SSL/TLS certificates
+
+## BACKGROUND KNOWLEDGE
+
+- In Project 8, we achived load balancer with Apache, aside Apache, NGINX can also be used for load balancer.
+
+- So what is NGINX? Aside Apache, NGNIX is another popular open-source web server software. It is used for reverse proxy, load balancing, and caching. It provides HTTPS server capabilities and is mainly designed for maximum performance and stability. It also functions as a proxy server for email communications protocols, such as IMAP, POP3, and SMTP.
 
 - It is also extremely important to ensure that connections to your Web solutions are secure and information is [encrypted in transit](https://security.berkeley.edu/data-encryption-transit-guideline) – we will also cover connection over secured HTTP (HTTPS protocol), its purpose and what is required to implement it.
 
-- When data is moving between a client (browser) and a Web Server over the Internet – it passes through multiple network devices and, if the data is not encrypted, it can be relatively easy intercepted by someone who has access to the intermediate equipment. This kind of information security threat is called [Man-In-The-Middle (MIMT) attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
-
-- This threat is real – users that share sensitive information (bank details, social media access credentials, etc.) via non-secured channels, risk their data to be compromised and used by [cybercriminals](https://www.trendmicro.com/vinfo/us/security/definition/cybercriminals).
+- When data is moving between a client (browser) and a Web Server over the Internet – it passes through multiple network devices and, if the data is not encrypted, it can be relatively easy intercepted by someone who has access to the intermediate equipment, there by exposing sensitive information (bank details, social media access credentials, etc.) via non-secured channels. This kind of information security threat is called [Man-In-The-Middle (MIMT) attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
 - [SSL and its newer version, TSL](https://en.wikipedia.org/wiki/Transport_Layer_Security#SSL_1.0,_2.0,_and_3.0) – is a security technology that protects connection from MITM attacks by creating an encrypted session between browser and Web server. Here we will refer this family of cryptographic protocols as SSL/TLS – even though SSL was replaced by TLS, the term is still being widely used.
 
@@ -18,17 +29,27 @@ LOAD BALANCER SOLUTION WITH NGINX AND SSL/TLS
 
 - In this project you will register your website with [LetsEnrcypt](https://letsencrypt.org) Certificate Authority, to automate certificate issuance you will use a shell client recommended by LetsEncrypt – [cetrbot](https://certbot.eff.org).
 
-- **Task**
+## Setup and technologies used in Project 8
+- In this project we will enhance our **Tooling Website** solution by adding a Load Balancer to disctribute traffic between Web Servers and allow users to access our website using a single URL.
 
-- This project consists of two parts:
+- To simplify, let us implement this solution with **2 Web Servers**, the approach will be the same for 3 and more Web Servers.
+- Make sure that you have following servers installed and configured within Project-7:
 
-1. - Configure Nginx as a Load Balancer
+1. - Two RHEL8 Web Servers
 
-2. - Register a new domain name and configure secured connection using SSL/TLS certificates
+2. - One MySQL DB Server (based on Ubuntu 20.04 LTS)
+
+3. - One RHEL8 NFS server
+
+4. - One **Nginx LB** server(based on Ubuntu Server 20.04 LTS)
 
 - Your target architecture will look like this:
 
-<img width="550" alt="Architecture" src="https://user-images.githubusercontent.com/115954100/230002592-5a148bf1-0fff-40e4-bd73-2add5ac2a9d0.png">
+![10_1](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/39dc9bc2-c2e2-4939-acde-4b4890f099db)   
+
+
+![10_2](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/e58525a7-9170-4abf-a364-16fb8e9057c9)
+   
 
 ## ***CONFIGURE NGINX AS A LOAD BALANCER***
 
