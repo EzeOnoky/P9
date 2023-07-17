@@ -65,6 +65,8 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 ```
 sudo apt update
 sudo apt install nginx
+sudo systemctl enable nginx && sudo systemctl start nginx
+sudo systemctl status nginx
 ```
 
 # PICTURE  - CHECK Tony 
