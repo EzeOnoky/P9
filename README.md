@@ -56,7 +56,12 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 
 2. - I had to update **/etc/hosts** file for local DNS with Web Servers’ names (e.g. **Web1 and Web2**) and their local IP addresses, just as it was done on Project 8.
   
-# PICTURE  - CHECK Tony 
+ On the NGINX server, execute below...
+
+ `sudo vi /etc/hosts`
+
+ ![10_7](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b9c44054-45d3-4650-97db-04ca0076d323)
+ 
 
 3. - Install and configure Nginx as a load balancer to point traffic to the resolvable DNS names of the webservers
 
@@ -96,18 +101,37 @@ server {
 #comment out this line
 #include /etc/nginx/sites-enabled/*;
 ```
+Below in red rectangle was added...
 
-# PICTURE  - CHECK Tony 
+![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/98dd323e-97b2-46c8-8c41-677a1adf7377)
+
+
+Now we need to remove our defualt site so that our reverse proxy will be redirecting to out new configuration file, below was used...
+
+`sudo rm -f /etc/ngninx/sites-enabled/default`
+
+We also need to check that our NGINX config file is without errors.
+
+`sudo nginx -t`
+
+![10_9](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/fe4cc783-4732-4eaf-930f-db0a3cb0dce8)
+
+Now we return to our NGINX site enabled...the site enabled is empty, we target to link our load balancer config file that we just created in our site available to our site enabled so that the NGINX can access our configuration through it
+
+`cd /etc/ngninx/sites-enabled/`
+`ls`
+sudo ln -s ../sites-available/load_balancer.conf
+`ls`  - recall previously, this was empty
 
 - Restart Nginx and make sure the service is up and running
 
 ```
-sudo systemctl enable nginx
-sudo systemctl restart nginx
+sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
 
-<img width="639" alt="NGINX INSTALLED AND RUNNING" src="https://user-images.githubusercontent.com/115954100/230287663-d998efef-5eaf-464a-b49a-dae3c2e7e8a0.png">
+![10_10](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/318eef94-89df-4aa3-9248-ffe0b83630c3)
+
 
 - **Side Self Study**: Read more about HTTP load balancing methods and features supported by Nginx [on this page](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/).
 
