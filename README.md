@@ -179,13 +179,32 @@ When you launch an EC2 instance, you receive a Public IP address by which that i
 
 
 ![10_64](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b9b58488-0e01-4d57-a729-42d62f781d85)
-How to create an elastic IP and associate it to our running instance
+
+`How to create an elastic IP and associate it to our running instance`
+
 
 NOTE : For this project, static IP assigned on the NGINX LB was used, no elastic IP was deployed.
 
-3. - Update [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) in your registrar to point to Nginx LB using statis IP address
+### 3. - Update DNS A Record on our AWS Route 53
+Now we proceed to update [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) in the registrar of our Route 53 to point to Nginx LB using static IP address
 
-Learn how associate your domain name to your Elastic IP [on this page](https://medium.com/progress-on-ios-development/connecting-an-ec2-instance-with-a-godaddy-domain-e74ff190c233).
+We go back to the route 53 and click "create record" using the NGNIX LB Static IP.
+
+We will create [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) for www.ezeonokyproject10.com.ng and ezeonokyproject10.com.ng using the same static IP.
+
+![10_61](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/79512134-f1f6-4856-97aa-23902b56fecf)
+
+
+![10_62](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/64a7c5ae-1a6c-4936-808d-40968dcb75b2)
+
+
+This will allow us login using any of the  domain name format - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
+
+![10_63](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/97889352-46f2-496a-97af-0f7bcf477dc7)
+
+
+
+Learn more on how to associate your domain name to your Elastic IP [on this page](https://medium.com/progress-on-ios-development/connecting-an-ec2-instance-with-a-godaddy-domain-e74ff190c233).
 
 - **Side Self Study**: Read about different [DNS record types](https://www.cloudflare.com/learning/dns/dns-records/) and learn what they are used for.
 
