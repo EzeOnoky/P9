@@ -61,11 +61,11 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
  
 ## ***CONFIGURE NGINX AS A LOAD BALANCER***
 
-1. - I created an EC2 VM based on Ubuntu Server 20.04 LTS and name it **Nginx LB** (do not forget to open TCP port 80 for HTTP connections, also open TCP port 443 – this port is used for secured HTTPS connections).
+### 1. - I created an EC2 VM based on Ubuntu Server 20.04 LTS and name it **Nginx LB** (do not forget to open TCP port 80 for HTTP connections, also open TCP port 443 – this port is used for secured HTTPS connections).
   
 ![10_2](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/e58525a7-9170-4abf-a364-16fb8e9057c9)   
 
-2. - I had to update **/etc/hosts** file for local DNS with Web Servers’ names (e.g. **Web1 and Web2**) and their local IP addresses, just as it was done on Project 8.
+### 2. - I had to update **/etc/hosts** file for local DNS with Web Servers’ names (e.g. **Web1 and Web2**) and their local IP addresses, just as it was done on Project 8.
   
  On the NGINX server, execute below...
 
@@ -74,67 +74,74 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
  ![10_7](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b9c44054-45d3-4650-97db-04ca0076d323)
  
 
-3. - Install and configure Nginx as a load balancer to point traffic to the resolvable DNS names of the webservers
+### 3. - Install and configure Nginx as a load balancer to point traffic to the resolvable DNS names of the webservers
 
 - I had to update the instance and Install Nginx
 
 ```
-sudo apt update
-sudo apt install nginx
+sudo apt update -y
+sudo apt install nginx -y
 sudo systemctl enable nginx && sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
-# PICTURE  - CHECK Tony 
+### 4. - Configure Nginx LB using Web Servers’ names defined in /etc/hosts
 
-- Configure Nginx LB using Web Servers’ names defined in /etc/hosts
-
-- Open the default nginx configuration file
+Open the default nginx configuration file
 
 `sudo vi /etc/nginx/nginx.conf`
 
-```
-#insert following configuration into http section
+Copy and paste the following, insert following configuration into http section...
 
+Remember on this line - `server Webserver1 weight=5;`, you have to capture same name used while modifying `sudo vi /etc/hosts` above
+
+```
  upstream myproject {
-    server Web1 weight=5;
-    server Web2 weight=5;
+    server Webserver1 weight=5;
+    server Webserver2 weight=5;
   }
 
 server {
     listen 80;
-    server_name www.domain.com;
+    server_name www.ezeonokyproject10.com.ng;
     location / {
       proxy_pass http://myproject;
     }
   }
-
-#comment out this line
-#include /etc/nginx/sites-enabled/*;
 ```
+
+comment out this line `include /etc/nginx/sites-enabled/*;`
+i.e  #include /etc/nginx/sites-enabled/*; in the above file.
+
+# change the picture used, capture all that was added and delete this
 Below in red rectangle was added...
 
 ![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/98dd323e-97b2-46c8-8c41-677a1adf7377)
 
 
-Now we need to remove our defualt site so that our reverse proxy will be redirecting to out new configuration file, below was used...
-
-`sudo rm -f /etc/ngninx/sites-enabled/default`
-
-We also need to check that our NGINX config file is without errors.
+We also need to check that our NGINX config file is without errors. So we proceed to run the command below to test the configuration and check for any syntax error
 
 `sudo nginx -t`
 
 ![10_9](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/fe4cc783-4732-4eaf-930f-db0a3cb0dce8)
 
+Now we need to remove our defualt site so that our reverse proxy will be redirecting to out new configuration file, below was used...
+
+`sudo rm -f /etc/ngninx/sites-enabled/defaults`
+
 Now we return to our NGINX site enabled...the site enabled is empty, we target to link our load balancer config file that we just created in our site available to our site enabled so that the NGINX can access our configuration through it
 
-`cd /etc/ngninx/sites-enabled/`
-`ls`
+```
+cd /etc/ngninx/sites-enabled/
+ls
 sudo ln -s ../sites-available/load_balancer.conf
-`ls`  - recall previously, this was empty
+ls    ....recall previously, this was empty
 
-- Restart Nginx and make sure the service is up and running
+OR...
+
+sudo ln -s /etc/nginx/nginx.conf /etc/nginx/sites-enabled
+
+Restart Nginx and make sure the service is up and running
 
 ```
 sudo systemctl reload nginx
@@ -145,6 +152,57 @@ sudo systemctl status nginx
 
 
 - **Side Self Study**: Read more about HTTP load balancing methods and features supported by Nginx [on this page](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/).
+
+We then try to access the nginx-LB from the browser using our domain name - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
+
+# PICTURE OF THE URL YOU TRIED LOADING
+
+In the above we will see that the connection is not secured. To configure a secure connection using SSL/TLS,
+
+### 5. - Install certbot and request for an SSL/TLS certificate
+
+Install certbot and request for an SSL/TLS certificate `sudo apt systemctl certbot -y`, also Install the dependencies `sudo apt install python3-certbot-nginx -y`
+
+```
+sudo apt systemctl certbot -y
+sudo apt install python3-certbot-nginx -y
+```
+
+Request a certificate by following the certbot instructions – you will need to choose which domain you want your certificate to be issued for, domain name will be looked up from `nginx.conf`
+
+`sudo certbot --nginx`
+
+Test secured access to your Web Solution by trying to reach https://www.ezeonokyproject10.com.ng
+
+We should be able to access our website by using HTTPS protocol (that uses TCP port 443) and see a padlock pictogram in your browser’s address bar. When we click on the padlock icon, we can see the details of the certificate issued for our website.
+
+# PICTURE OF THE URL YOU TRIED LOADING
+
+### 6. - Set up periodical renewal of your SSL/TLS certificate.
+
+By default, LetsEncrypt certificate is valid every 90 days, so it is recommended to renew it at least every 60 days or more frequently.
+
+You can test renewal command in dry-run mode.
+
+`sudo certbot renew --dry-run`
+
+Best pracice is to have a scheduled job to run renew command periodically.
+
+Let us configure a cronjob to run the renewal twice per day. The command checks to see if the certificate on the server will expire within the next 30 days, and renews it if so.
+
+To do so, lets edit the crontab file with the following command:
+
+```
+crontab -e
+
+* */12 * * *   root /usr/bin/certbot renew > /dev/null 2>&1
+```
+
+# PICTURE required
+
+
+# CONGRATULATIONS EZE !
+We just implemented an Nginx Load Balancing Web Solution with secured HTTPS connection and periodical SSL/TLS certificates update.
 
 
 ## ***REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES***
