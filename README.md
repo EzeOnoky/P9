@@ -151,11 +151,29 @@ sudo systemctl status nginx
 
 - Let us make necessary configurations to make connections to our Tooling Web Solution secured!
 
-- In order to get a valid SSL certificate – you need to register a new domain name, you can do it using any [Domain name registrar](https://en.wikipedia.org/wiki/Domain_name_registra) – a company that manages reservation of domain names. The most popular ones are: [Godaddy.com](https://www.godaddy.com/en-uk), [Domain.com](https://www.domain.com), [Bluehost.com](https://www.bluehost.com).
+### 1. Register a Domain Name. Connect your Route 53 hosted zone to your newly registered domain
+- First, we need to register a new domain name. We can do it using any Domain name registrar – a company that manages reservation of domain names. godaddy.com etc
+  
+- I choose https://www.domainking.ng/ for my domain name registration. Domain Name - ezeonokyproject10.com.ng was registered.
 
-1. - Register a new domain name with any registrar of your choice in any domain zone (e.g. .com, .net, .org, .edu, .info, .xyz or any other)
+- On the AWS console, i searched for route 53, clicked on it and create a hosted zone. I Created the hosted zone by filling in the required details of our new domain name.
+  
+![10_3](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/03df2fb8-6325-43f7-b0db-22059eadfaae)
 
-2. - Assign an Elastic IP to your Nginx LB server and associate your domain name with this Elastic IP
+For our route 53 to connect to our domain name, we need to copy each of our nameservers from the route 53 to the new domain name on the www.domainking.ng
+
+Copy these details under `Value/Route Traffic To`
+
+![10_5](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/699b1928-9236-4ae6-ae42-c806a772396b)
+
+ ....to below on the newly registered domain page, and then click  on "change nameservers", as per step 12 below.
+
+ ![10_6](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/90d2b002-e6eb-4305-abcc-9bbce4b7c87c)
+
+ So our route 53 is now connected to our new domain name -  ezeonokyproject10.com.ng 
+
+
+### 2. - Assign an Elastic IP to your Nginx LB server and associate your domain name with this Elastic IP
 
 - You might have noticed, that every time you restart or stop/start your EC2 instance – you get a new public IP address. When you want to associate your domain name – it is better to have a static IP address that does not change after reboot. Elastic IP is the solution for this problem, learn how to allocate an Elastic IP and associate it with an EC2 server [on this page](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html).
 
