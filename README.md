@@ -13,9 +13,20 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 
 ## BACKGROUND KNOWLEDGE
 
-- In Project 8, we achived load balancer with Apache, aside Apache, NGINX can also be used for load balancer.
+- In Project 9, we achieved load balancer with Apache, aside Apache, NGINX can also be used for load balancer.
 
 - So what is NGINX? Aside Apache, NGNIX is another popular open-source web server software. It is used for reverse proxy, load balancing, and caching. It provides HTTPS server capabilities and is mainly designed for maximum performance and stability. It also functions as a proxy server for email communications protocols, such as IMAP, POP3, and SMTP.
+
+ Some of the differences between __Apache__ and __Nginx__ include:
+
+| Apache | Nginx |
+| ---- | --- |
+|    Apache runs on all Unix like systems such as Linux, BSD, etc. as well as completely supports Windows.  |Nginx runs on modern Unix like systems; however it has limited support for Windows. |
+| Apache uses a multi-threaded approach to process client requests. | Nginx follows an event-driven approach to serve client requests. |
+| Apache cannot handle multiple requests concurrently with heavy web traffic. | Nginx can handle multiple client requests concurrently and efficiently with limited hardware resources. |
+| Apache processes dynamic content within the web server itself | Nginx can't process dynamic content natively. |
+| Apache is designed to be a web server. | Nginx is both a web server and a [proxy server](https://www.fortinet.com/resources/cyberglossary/proxy-server). |
+| The performance of Apache for static content is lower than Nginx. | Nginx can simultaneously run thousands of connections of static content two times faster than Apache and uses little less memory.
 
 - It is also extremely important to ensure that connections to your Web solutions are secure and information is [encrypted in transit](https://security.berkeley.edu/data-encryption-transit-guideline) – we will also cover connection over secured HTTP (HTTPS protocol), its purpose and what is required to implement it.
 
@@ -29,7 +40,7 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 
 - In this project you will register your website with [LetsEnrcypt](https://letsencrypt.org) Certificate Authority, to automate certificate issuance you will use a shell client recommended by LetsEncrypt – [cetrbot](https://certbot.eff.org).
 
-## Setup and technologies used in Project 8
+## Setup and technologies used in Project 10
 - In this project we will enhance our **Tooling Website** solution by adding a Load Balancer to disctribute traffic between Web Servers and allow users to access our website using a single URL.
 
 - To simplify, let us implement this solution with **2 Web Servers**, the approach will be the same for 3 and more Web Servers.
