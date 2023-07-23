@@ -58,6 +58,69 @@ Implement Nginx Load Balancing Web Solution with secured HTTPS connection with p
 
 ![10_1](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/39dc9bc2-c2e2-4939-acde-4b4890f099db)   
 
+
+## ***REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES***
+
+- Let us make necessary configurations to make connections to our Tooling Web Solution secured!
+
+### 1. Register a Domain Name. Connect your Route 53 hosted zone to your newly registered domain
+- First, we need to register a new domain name. We can do it using any Domain name registrar – a company that manages reservation of domain names. godaddy.com etc
+  
+- I choose https://www.domainking.ng/ for my domain name registration. Domain Name - ezeonokyproject10.com.ng was registered.
+
+- On the AWS console, i searched for route 53, clicked on it and create a hosted zone. I Created the hosted zone by filling in the required details of our new domain name.
+  
+![10_3](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/03df2fb8-6325-43f7-b0db-22059eadfaae)
+
+For our route 53 to connect to our domain name, we need to copy each of our nameservers from the route 53 to the new domain name on the www.domainking.ng
+
+Copy these details under `Value/Route Traffic To`
+
+![10_5](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/699b1928-9236-4ae6-ae42-c806a772396b)
+
+ ....to below on the newly registered domain page, and then click  on "change nameservers", as per step 12 below.
+
+ ![10_6](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/90d2b002-e6eb-4305-abcc-9bbce4b7c87c)
+
+ So our route 53 is now connected to our new domain name -  ezeonokyproject10.com.ng 
+
+
+### 2. - Assign an Elastic IP to your Nginx LB server and associate your domain name with this Elastic IP
+
+When you launch an EC2 instance, you receive a Public IP address by which that instance is reachable from the internet. Once the instance is stoped and restarted, the instance gets a new Public IP for the same instance. So it's basically a problem to connect your instance from internet for not having a static IP. To overcome this problem, we attach an Elastic IP to an Instance. Below is a step guide on how to generate an elastic IP and associate it with a running instance.
+
+
+![10_64](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b9b58488-0e01-4d57-a729-42d62f781d85)
+
+`How to create an elastic IP and associate it to our running instance`
+
+
+NOTE : For this project, static IP assigned on the NGINX LB was used, no elastic IP was deployed.
+
+### 3. - Update DNS A Record on our AWS Route 53
+Now we proceed to update [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) in the registrar of our Route 53 to point to Nginx LB using static IP address
+
+We go back to the route 53 and click "create record" using the NGNIX LB Static IP.
+
+We will create [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) for www.ezeonokyproject10.com.ng and ezeonokyproject10.com.ng using the same static IP.
+
+![10_61](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/79512134-f1f6-4856-97aa-23902b56fecf)
+
+
+![10_62](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/64a7c5ae-1a6c-4936-808d-40968dcb75b2)
+
+
+This will allow us login using any of the  domain name format - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
+
+![10_63](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/97889352-46f2-496a-97af-0f7bcf477dc7)
+
+
+
+Learn more on how to associate your domain name to your Elastic IP [on this page](https://medium.com/progress-on-ios-development/connecting-an-ec2-instance-with-a-godaddy-domain-e74ff190c233).
+
+- **Side Self Study**: Read about different [DNS record types](https://www.cloudflare.com/learning/dns/dns-records/) and learn what they are used for.
+
+
  
 ## ***CONFIGURE NGINX AS A LOAD BALANCER***
 
@@ -208,66 +271,13 @@ crontab -e
 We just implemented an Nginx Load Balancing Web Solution with secured HTTPS connection and periodical SSL/TLS certificates update.
 
 
-## ***REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES***
-
-- Let us make necessary configurations to make connections to our Tooling Web Solution secured!
-
-### 1. Register a Domain Name. Connect your Route 53 hosted zone to your newly registered domain
-- First, we need to register a new domain name. We can do it using any Domain name registrar – a company that manages reservation of domain names. godaddy.com etc
-  
-- I choose https://www.domainking.ng/ for my domain name registration. Domain Name - ezeonokyproject10.com.ng was registered.
-
-- On the AWS console, i searched for route 53, clicked on it and create a hosted zone. I Created the hosted zone by filling in the required details of our new domain name.
-  
-![10_3](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/03df2fb8-6325-43f7-b0db-22059eadfaae)
-
-For our route 53 to connect to our domain name, we need to copy each of our nameservers from the route 53 to the new domain name on the www.domainking.ng
-
-Copy these details under `Value/Route Traffic To`
-
-![10_5](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/699b1928-9236-4ae6-ae42-c806a772396b)
-
- ....to below on the newly registered domain page, and then click  on "change nameservers", as per step 12 below.
-
- ![10_6](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/90d2b002-e6eb-4305-abcc-9bbce4b7c87c)
-
- So our route 53 is now connected to our new domain name -  ezeonokyproject10.com.ng 
-
-
-### 2. - Assign an Elastic IP to your Nginx LB server and associate your domain name with this Elastic IP
-
-When you launch an EC2 instance, you receive a Public IP address by which that instance is reachable from the internet. Once the instance is stoped and restarted, the instance gets a new Public IP for the same instance. So it's basically a problem to connect your instance from internet for not having a static IP. To overcome this problem, we attach an Elastic IP to an Instance. Below is a step guide on how to generate an elastic IP and associate it with a running instance.
-
-
-![10_64](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b9b58488-0e01-4d57-a729-42d62f781d85)
-
-`How to create an elastic IP and associate it to our running instance`
-
-
-NOTE : For this project, static IP assigned on the NGINX LB was used, no elastic IP was deployed.
-
-### 3. - Update DNS A Record on our AWS Route 53
-Now we proceed to update [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) in the registrar of our Route 53 to point to Nginx LB using static IP address
-
-We go back to the route 53 and click "create record" using the NGNIX LB Static IP.
-
-We will create [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) for www.ezeonokyproject10.com.ng and ezeonokyproject10.com.ng using the same static IP.
-
-![10_61](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/79512134-f1f6-4856-97aa-23902b56fecf)
-
-
-![10_62](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/64a7c5ae-1a6c-4936-808d-40968dcb75b2)
-
-
-This will allow us login using any of the  domain name format - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
-
-![10_63](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/97889352-46f2-496a-97af-0f7bcf477dc7)
 
 
 
-Learn more on how to associate your domain name to your Elastic IP [on this page](https://medium.com/progress-on-ios-development/connecting-an-ec2-instance-with-a-godaddy-domain-e74ff190c233).
 
-- **Side Self Study**: Read about different [DNS record types](https://www.cloudflare.com/learning/dns/dns-records/) and learn what they are used for.
+
+
+
 
 - Check that your Web Servers can be reached from your browser using new domain name using HTTP protocol – ***http://<your-domain-name.com>***
 
