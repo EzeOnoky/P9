@@ -140,13 +140,16 @@ ls    ....recall previously, this was empty
 OR...
 
 sudo ln -s /etc/nginx/nginx.conf /etc/nginx/sites-enabled
+```
 
 Restart Nginx and make sure the service is up and running
+
 
 ```
 sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
+
 
 ![10_10](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/318eef94-89df-4aa3-9248-ffe0b83630c3)
 
