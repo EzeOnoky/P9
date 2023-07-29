@@ -183,6 +183,11 @@ Copy these details under `Value/Route Traffic To`
  So our route 53 is now connected to our new domain name -  ezeonokyproject10.com.ng 
 
 
+ ![10_12](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/f28dee11-dd56-447a-bf94-8b5045458391)
+
+
+
+
 ### 2B.     - Assign an Elastic IP to your Nginx LB server and associate your domain name with this Elastic IP
 
 When you launch an EC2 instance, you receive a Public IP address by which that instance is reachable from the internet. Once the instance is stoped and restarted, the instance gets a new Public IP for the same instance. So it's basically a problem to connect your instance from internet for not having a static IP. To overcome this problem, we attach an Elastic IP to an Instance. Below is a step guide on how to generate an elastic IP and associate it with a running instance.
@@ -224,7 +229,8 @@ Learn more on how to associate your domain name to your Elastic IP [on this page
 
 We then try to access the nginx-LB from the browser using our domain name - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
 
-# PICTURE OF THE URL YOU TRIED LOADING
+![10_13](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b1d7ebd8-a1cd-4ede-bd25-2457de3456fb)
+
 
 In the above we will see that the connection is not secured. To configure a secure connection using SSL/TLS, we use below...
 
