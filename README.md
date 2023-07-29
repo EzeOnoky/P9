@@ -113,55 +113,53 @@ server {
 comment out this line `include /etc/nginx/sites-enabled/*;`
 i.e  #include /etc/nginx/sites-enabled/*; in the above file.
 
-# change the picture used, capture all that was added and delete this
-Below in red rectangle was added...
+Below in green rectangle was added...
 
-![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/98dd323e-97b2-46c8-8c41-677a1adf7377)
+![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/efeafbb3-0a04-4212-97a1-c685a7954878)
 
 
 We also need to check that our NGINX config file is without errors. So we proceed to run the command below to test the configuration and check for any syntax error
 
 `sudo nginx -t`
 
-![10_9](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/fe4cc783-4732-4eaf-930f-db0a3cb0dce8)
+![10_9](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/2495cc70-38fd-4f9f-8415-90dd8243ba0b)
 
 Now we need to remove our defualt site so that our reverse proxy will be redirecting to out new configuration file, below was used...
 
 `sudo rm -f /etc/ngninx/sites-enabled/defaults`
 
+
+Link the `/etc/nginx/nginx.conf` to the `/etc/nginx/sites-enabled`
 Now we return to our NGINX site enabled...the site enabled is empty, we target to link our load balancer config file that we just created in our site available to our site enabled so that the NGINX can access our configuration through it
 
-```
-cd /etc/ngninx/sites-enabled/
-ls
-sudo ln -s ../sites-available/load_balancer.conf
-ls    ....recall previously, this was empty
 
-OR...
+```
+sudo rm -rf /etc/nginx/sites-enabled/defaults
 
 sudo ln -s /etc/nginx/nginx.conf /etc/nginx/sites-enabled
 ```
 
-Restart Nginx and make sure the service is up and running
+After the link is made, change directory to  cd /etc/nginx/sites-enabled(note previously, this directory was empty) and confirm the link was successful... see below
 
+![10_11](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/09d4afbd-99ec-4ffd-a835-6717fdfd444d)
+
+
+Restart Nginx and make sure the service is up and running
 
 ```
 sudo systemctl reload nginx
 sudo systemctl status nginx
 ```
 
-
 ![10_10](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/318eef94-89df-4aa3-9248-ffe0b83630c3)
 
 
 - **Side Self Study**: Read more about HTTP load balancing methods and features supported by Nginx [on this page](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/).
 
+Continue to step B below....
 
 
-
-## B     ***REGISTER A NEW DOMAIN NAME AND CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES***
-
-- Let us make necessary configurations to make connections to our Tooling Web Solution secured!
+## B     ***REGISTER A NEW DOMAIN NAME AND CONNECT IT TO YOUR ROUTE 53 ON THE AWS LOGIN***
 
 ### 1B.     Register a Domain Name. Connect your Route 53 hosted zone to your newly registered domain
 - First, we need to register a new domain name. We can do it using any Domain name registrar – a company that manages reservation of domain names. godaddy.com etc
@@ -233,6 +231,8 @@ In the above we will see that the connection is not secured. To configure a secu
 
  
 ## C       ***CONFIGURE SECURED CONNECTION USING SSL/TLS CERTIFICATES ON YOUR REGISTERED DOMAIN NAME***
+
+- Let us make necessary configurations to make connections to our Tooling Web Solution secured!
 
 ### 1C.      - Install certbot and request for an SSL/TLS certificate
 
