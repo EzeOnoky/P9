@@ -97,13 +97,13 @@ Remember on this line - `server Webserver1 weight=5;`, you have to capture same 
 
 ```
  upstream myproject {
-    server Webserver1 weight=5;
-    server Webserver2 weight=5;
+    server WEB1 weight=5;
+    server WEB2 weight=5;
   }
 
 server {
     listen 80;
-    server_name www.ezeonokyproject10.com.ng;
+    server_name ezeonokyproject10.com.ng www.ezeonokyproject10.com.ng;
     location / {
       proxy_pass http://myproject;
     }
@@ -115,7 +115,8 @@ i.e  #include /etc/nginx/sites-enabled/*; in the above file.
 
 Below in green rectangle was added...
 
-![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/efeafbb3-0a04-4212-97a1-c685a7954878)
+
+![10_8](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/331b58aa-7f62-459c-87d9-8b942a7de775)
 
 
 We also need to check that our NGINX config file is without errors. So we proceed to run the command below to test the configuration and check for any syntax error
@@ -198,10 +199,6 @@ When you launch an EC2 instance, you receive a Public IP address by which that i
 `How to create an elastic IP and associate it to our running instance`
 
 
-NOTE : For this project, static IP assigned on the NGINX LB was used, no elastic IP was deployed.
-
-
-
 ### 3B.      - Update DNS A Record on our AWS Route 53
 Now we proceed to update [A record](https://www.cloudflare.com/learning/dns/dns-records/dns-a-record/) in the registrar of our Route 53 to point to Nginx LB using static IP address
 
@@ -229,6 +226,26 @@ Learn more on how to associate your domain name to your Elastic IP [on this page
 
 We then try to access the nginx-LB from the browser using our domain name - www.ezeonokyproject10.com.ng or ezeonokyproject10.com.ng
 
+Below error was encounter...
+
+![10_13a](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/d9ad49e1-9843-4655-83c3-b35bddc9df3b)
+
+A ping to the site was done, using `ping -c 2 www.ezeonokyproject10.com.ng` . Error UNKNOWN HOST was returned
+
+Also DNS check was done, https://dnschecker.org/#A/ezeonokyproject10.com.ng, no DNS record was seen.
+
+The NS record on AWS Route 53 was checked and confirmed OK, same NS record was duely updated on the on my domain registar(https://clients.domainking.ng/)
+
+
+I awaited for a while before above and below was able to load, It appear my Domain Registar did not immediately update my new IP address, hence the earlier received error message when i tried loading the site. Some Data Centre had not captured the the new IP, possibly the IP address was still propagating, hence the delay in loading of below site.
+
+![10_13b](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/eaa8e6f3-cd93-41c3-bd41-f63118b34a07)
+
+ Notice my domain registrar has not fully update my DNS record on some data centre. Several data centres haven’t updated my IP to my domain name. Anyone  from such region trying to access my site will isuues accessing my domain name.
+
+
+Confirmation of successful site loading
+
 ![10_13](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/b1d7ebd8-a1cd-4ede-bd25-2457de3456fb)
 
 
@@ -253,11 +270,23 @@ Request a certificate by following the certbot instructions – you will need to
 
 `sudo certbot --nginx`
 
+A running above, below error was encountered...
+
+![10_13c](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/f6affec4-abc4-48e1-808f-2462297a25e0)
+
+After changes the the NGINX config file, below was executed
+
+`sudo certbot --nginx -d ezeonokyproject10.com.ng -d www.ezeonokyproject10.com.ng`
+
+![10_13d](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/444d9f02-28b9-4e4e-87d6-f78bf799ef34)
+
+
 Test secured access to your Web Solution by trying to reach https://www.ezeonokyproject10.com.ng
+
+![10_13e](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/6dfbea18-fc2f-4595-b7e6-005cd4ecaa11)
 
 We should be able to access our website by using HTTPS protocol (that uses TCP port 443) and see a padlock pictogram in your browser’s address bar. When we click on the padlock icon, we can see the details of the certificate issued for our website.
 
-# PICTURE OF THE URL YOU TRIED LOADING
 
 ### 2C.        - Set up periodical renewal of your SSL/TLS certificate.
 
@@ -266,6 +295,8 @@ By default, LetsEncrypt certificate is valid every 90 days, so it is recommended
 You can test renewal command in dry-run mode.
 
 `sudo certbot renew --dry-run`
+
+![10_13f](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/93b487dd-f67c-43da-abb8-95d96e07a5d4)
 
 Best pracice is to have a scheduled job to run renew command periodically.
 
@@ -279,7 +310,7 @@ crontab -e
 * */12 * * *   root /usr/bin/certbot renew > /dev/null 2>&1
 ```
 
-# PICTURE required
+![10_13f](https://github.com/EzeOnoky/Project-Base-Learning-10/assets/122687798/9c08f9b7-8d61-411d-9680-d342fa0c1718)
 
 
 # CONGRATULATIONS EZE !
